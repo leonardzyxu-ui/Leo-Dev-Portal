@@ -1,0 +1,1450 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A showcase portal for every website Leo has developed.">
+  <title>Leo Development Portal</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='8' fill='%23181b1e'/%3E%3Cpath d='M6 8h36' stroke='%2362a8ff' stroke-width='4'/%3E%3Ctext x='24' y='31' text-anchor='middle' font-family='Arial,sans-serif' font-size='14' font-weight='800' fill='%23f3f0e8'%3ELeo%3C/text%3E%3C/svg%3E">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0e1011;
+      --bg-2: #141618;
+      --surface: #181b1e;
+      --surface-2: #202327;
+      --line: rgba(238, 241, 235, 0.14);
+      --line-strong: rgba(238, 241, 235, 0.24);
+      --text: #f3f0e8;
+      --muted: #b9b7ad;
+      --dim: #85837b;
+      --blue: #62a8ff;
+      --green: #65d596;
+      --red: #ff766d;
+      --amber: #f2be5c;
+      --cyan: #68d8d2;
+      --shadow: 0 18px 42px rgba(0, 0, 0, 0.28);
+      --radius: 8px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        linear-gradient(115deg, rgba(104, 216, 210, 0.08), transparent 34%),
+        linear-gradient(245deg, rgba(255, 118, 109, 0.08), transparent 36%),
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.026) 0 1px, transparent 1px 84px),
+        linear-gradient(180deg, var(--bg), #111213 45%, #0b0c0d);
+      color: var(--text);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, transparent, rgba(98, 168, 255, 0.05), transparent),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent 34%);
+      opacity: 0.7;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+    }
+
+    .shell {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+    }
+
+    .hero {
+      min-height: 82vh;
+      display: grid;
+      grid-template-columns: minmax(0, 0.95fr) minmax(360px, 1.05fr);
+      gap: 28px;
+      align-items: center;
+      padding: 26px 0 36px;
+    }
+
+    .brand-row,
+    .top-actions,
+    .quick-stats,
+    .filter-row,
+    .meta-row,
+    .card-actions,
+    .tag-list,
+    .section-heading,
+    .empty-state {
+      display: flex;
+      align-items: center;
+    }
+
+    .brand-row {
+      justify-content: space-between;
+      gap: 18px;
+      padding: 22px 0 6px;
+    }
+
+    .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 78px;
+      height: 42px;
+      padding: 0 12px;
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(135deg, rgba(98, 168, 255, 0.25), transparent),
+        linear-gradient(315deg, rgba(101, 213, 150, 0.2), rgba(255, 118, 109, 0.1)),
+        #17191b;
+      color: var(--text);
+      font-size: 0.84rem;
+      font-weight: 780;
+      letter-spacing: 0;
+      white-space: nowrap;
+      box-shadow: var(--shadow);
+    }
+
+    .top-actions {
+      gap: 10px;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .top-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.035);
+      transition: border-color 160ms ease, transform 160ms ease, color 160ms ease;
+    }
+
+    .top-link:hover,
+    .top-link:focus-visible {
+      color: var(--text);
+      border-color: var(--line-strong);
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    .hero-copy {
+      display: grid;
+      gap: 24px;
+      align-content: center;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    .hero h1 {
+      font-size: 4.4rem;
+      line-height: 0.96;
+      font-weight: 820;
+      letter-spacing: 0;
+      max-width: 780px;
+    }
+
+    .hero h1 span {
+      color: transparent;
+      background: linear-gradient(90deg, var(--text), #a8e8cf 40%, #79bbff 74%, #ffb06b);
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+
+    .lede {
+      max-width: 600px;
+      color: var(--muted);
+      font-size: 1.16rem;
+      line-height: 1.7;
+    }
+
+    .quick-stats {
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .stat {
+      min-width: 134px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.7rem;
+      line-height: 1;
+      color: var(--text);
+      font-weight: 800;
+    }
+
+    .stat span {
+      display: block;
+      margin-top: 6px;
+      color: var(--dim);
+      font-size: 0.88rem;
+    }
+
+    .control-panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(24, 27, 30, 0.84);
+      box-shadow: var(--shadow);
+      padding: 14px;
+      display: grid;
+      gap: 12px;
+      backdrop-filter: blur(18px);
+    }
+
+    .search-wrap {
+      position: relative;
+    }
+
+    .search-wrap svg {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      color: var(--dim);
+      pointer-events: none;
+    }
+
+    .search {
+      width: 100%;
+      min-height: 52px;
+      padding: 0 14px 0 44px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #111315;
+      color: var(--text);
+      outline: none;
+    }
+
+    .search:focus {
+      border-color: rgba(98, 168, 255, 0.72);
+      box-shadow: 0 0 0 3px rgba(98, 168, 255, 0.13);
+    }
+
+    .filter-row {
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.035);
+      color: var(--muted);
+      min-height: 36px;
+      padding: 0 11px;
+      cursor: pointer;
+      transition: background 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease;
+    }
+
+    .filter-btn:hover,
+    .filter-btn:focus-visible {
+      border-color: var(--line-strong);
+      color: var(--text);
+      outline: none;
+    }
+
+    .filter-btn.active {
+      background: var(--text);
+      color: #111315;
+      border-color: var(--text);
+    }
+
+    .showcase-panel {
+      min-height: 520px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.065), transparent 38%),
+        linear-gradient(135deg, rgba(98, 168, 255, 0.18), transparent 28%),
+        linear-gradient(305deg, rgba(242, 190, 92, 0.14), transparent 30%),
+        #16181a;
+      box-shadow: var(--shadow);
+      padding: 16px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      align-content: center;
+    }
+
+    .mini-card {
+      position: relative;
+      min-height: 168px;
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: #101214;
+      padding: 14px;
+      display: grid;
+      align-content: end;
+      transition: transform 180ms ease, border-color 180ms ease;
+    }
+
+    .mini-image {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: var(--image-position, center center);
+      filter: saturate(1) contrast(0.94) brightness(0.9);
+      transform: scale(1.02);
+    }
+
+    .mini-card:first-child {
+      grid-row: span 2;
+      min-height: 348px;
+    }
+
+    .mini-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255, 255, 255, 0.26);
+    }
+
+    .mini-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background:
+        linear-gradient(140deg, color-mix(in srgb, var(--accent) 42%, transparent), transparent 52%),
+        linear-gradient(180deg, rgba(8, 10, 12, 0.08), rgba(8, 10, 12, 0.68));
+      opacity: 0.78;
+    }
+
+    .mini-card::after {
+      content: "";
+      position: absolute;
+      inset: auto 14px 14px 14px;
+      z-index: 2;
+      height: 40%;
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(14, 16, 17, 0), rgba(14, 16, 17, 0.88));
+      pointer-events: none;
+    }
+
+    .mini-card-content {
+      position: relative;
+      z-index: 3;
+      display: grid;
+      gap: 8px;
+    }
+
+    .mini-art {
+      position: absolute;
+      inset: 18px 16px 56px;
+      z-index: 1;
+      width: calc(100% - 32px);
+      height: calc(100% - 74px);
+      color: var(--accent);
+      filter: drop-shadow(0 18px 24px rgba(0, 0, 0, 0.35));
+      opacity: 0.94;
+    }
+
+    .mini-card:first-child .mini-art {
+      inset: 24px 22px 86px;
+      width: calc(100% - 44px);
+      height: calc(100% - 110px);
+    }
+
+    .mini-card small {
+      color: rgba(255, 255, 255, 0.72);
+      font-weight: 700;
+    }
+
+    .mini-card strong {
+      font-size: 1.2rem;
+      line-height: 1.1;
+    }
+
+    main {
+      padding: 18px 0 72px;
+    }
+
+    .results-bar {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      padding: 10px 0 14px;
+      background: linear-gradient(180deg, rgba(14, 16, 17, 0.98), rgba(14, 16, 17, 0.74), transparent);
+      backdrop-filter: blur(16px);
+    }
+
+    .results-inner {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(24, 27, 30, 0.92);
+      padding: 12px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .results-meta {
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .catalog {
+      display: grid;
+      gap: 34px;
+      margin-top: 22px;
+    }
+
+    .category-section {
+      display: grid;
+      gap: 14px;
+    }
+
+    .section-heading {
+      justify-content: space-between;
+      gap: 16px;
+      padding: 0 2px;
+    }
+
+    .section-heading h2 {
+      font-size: 1.35rem;
+      line-height: 1.2;
+      font-weight: 780;
+    }
+
+    .section-heading span {
+      color: var(--dim);
+      font-size: 0.9rem;
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .project-card {
+      position: relative;
+      min-height: 424px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(24, 27, 30, 0.86);
+      overflow: hidden;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+      display: grid;
+      grid-template-rows: 168px 1fr;
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+    }
+
+    .project-card:hover,
+    .project-card:focus-within {
+      transform: translateY(-3px);
+      border-color: color-mix(in srgb, var(--accent) 55%, var(--line-strong));
+      background: rgba(32, 35, 39, 0.9);
+    }
+
+    .thumb {
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(135deg, color-mix(in srgb, var(--accent) 48%, transparent), transparent 62%),
+        linear-gradient(310deg, color-mix(in srgb, var(--accent-2) 38%, transparent), transparent 56%),
+        #101214;
+    }
+
+    .thumb::before {
+      content: "";
+      position: absolute;
+      inset: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.18) 0 16%, transparent 16% 100%),
+        repeating-linear-gradient(0deg, transparent 0 14px, rgba(255, 255, 255, 0.13) 14px 15px),
+        rgba(255, 255, 255, 0.05);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .thumb::after {
+      content: attr(data-code);
+      position: absolute;
+      right: 18px;
+      bottom: 14px;
+      color: rgba(255, 255, 255, 0.88);
+      font-weight: 840;
+      font-size: 2.2rem;
+      line-height: 1;
+      text-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .thumb-space::before {
+      background:
+        linear-gradient(90deg, transparent 0 44%, rgba(255, 255, 255, 0.32) 44% 47%, transparent 47%),
+        radial-gradient(circle at 54% 42%, rgba(255, 255, 255, 0.45) 0 2px, transparent 3px),
+        radial-gradient(circle at 25% 22%, rgba(255, 255, 255, 0.35) 0 1px, transparent 2px),
+        rgba(255, 255, 255, 0.04);
+    }
+
+    .thumb-product::before {
+      background:
+        linear-gradient(180deg, transparent 0 64%, rgba(255, 255, 255, 0.22) 64% 68%, transparent 68%),
+        linear-gradient(90deg, transparent 0 14%, rgba(255, 255, 255, 0.18) 14% 86%, transparent 86%),
+        rgba(255, 255, 255, 0.06);
+    }
+
+    .thumb-celestial::before {
+      background:
+        radial-gradient(circle at 50% 48%, transparent 0 34px, rgba(255, 255, 255, 0.28) 35px 36px, transparent 37px),
+        linear-gradient(90deg, transparent 49%, rgba(255, 255, 255, 0.22) 49% 51%, transparent 51%),
+        linear-gradient(0deg, transparent 49%, rgba(255, 255, 255, 0.22) 49% 51%, transparent 51%),
+        rgba(255, 255, 255, 0.04);
+    }
+
+    .thumb-dashboard::before {
+      background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.18) 0 22%, transparent 22%),
+        linear-gradient(0deg, transparent 0 58%, rgba(255, 255, 255, 0.18) 58% 62%, transparent 62%),
+        repeating-linear-gradient(90deg, transparent 0 22px, rgba(255, 255, 255, 0.12) 22px 24px),
+        rgba(255, 255, 255, 0.05);
+    }
+
+    .thumb-chat::before {
+      background:
+        radial-gradient(circle at 28% 30%, rgba(255, 255, 255, 0.22) 0 18px, transparent 19px),
+        linear-gradient(90deg, transparent 0 22%, rgba(255, 255, 255, 0.2) 22% 74%, transparent 74%),
+        linear-gradient(90deg, transparent 0 36%, rgba(255, 255, 255, 0.16) 36% 88%, transparent 88%),
+        rgba(255, 255, 255, 0.05);
+    }
+
+    .thumb-game::before {
+      background:
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.18) 0 14px, transparent 14px 28px),
+        repeating-linear-gradient(0deg, transparent 0 28px, rgba(255, 255, 255, 0.12) 28px 29px),
+        rgba(255, 255, 255, 0.05);
+    }
+
+    .thumb::before {
+      inset: 10px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.035)),
+        radial-gradient(circle at 24% 24%, color-mix(in srgb, var(--accent) 26%, transparent), transparent 34%),
+        rgba(255, 255, 255, 0.035);
+      opacity: 0.5;
+    }
+
+    .thumb::after {
+      top: 12px;
+      right: 12px;
+      bottom: auto;
+      z-index: 3;
+      padding: 5px 8px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: var(--radius);
+      background: rgba(10, 12, 14, 0.58);
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 0.78rem;
+      line-height: 1;
+      text-shadow: none;
+      backdrop-filter: blur(8px);
+    }
+
+    .thumb-art {
+      position: absolute;
+      inset: 12px;
+      z-index: 1;
+      width: calc(100% - 24px);
+      height: calc(100% - 24px);
+      color: var(--accent);
+      filter: drop-shadow(0 18px 24px rgba(0, 0, 0, 0.28));
+    }
+
+    .thumb-image {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: var(--image-position, center center);
+      filter: saturate(1) contrast(0.98) brightness(1);
+      transition: transform 220ms ease, filter 220ms ease;
+    }
+
+    .project-card:hover .thumb-image,
+    .project-card:focus-within .thumb-image {
+      transform: scale(1.035);
+      filter: saturate(1.04) contrast(0.98) brightness(0.98);
+    }
+
+    .thumb-art .glass,
+    .mini-art .glass {
+      fill: rgba(255, 255, 255, 0.08);
+      stroke: rgba(255, 255, 255, 0.2);
+    }
+
+    .thumb-art .soft,
+    .mini-art .soft {
+      fill: color-mix(in srgb, var(--accent) 30%, transparent);
+    }
+
+    .thumb-art .accent,
+    .mini-art .accent {
+      fill: var(--accent);
+    }
+
+    .thumb-art .accent-2,
+    .mini-art .accent-2 {
+      fill: var(--accent-2);
+    }
+
+    .thumb-art .line,
+    .mini-art .line {
+      fill: none;
+      stroke: rgba(255, 255, 255, 0.58);
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .card-body {
+      padding: 16px;
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+
+    .meta-row {
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--dim);
+      font-size: 0.86rem;
+    }
+
+    .host {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-width: 0;
+    }
+
+    .host-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 16px color-mix(in srgb, var(--accent) 60%, transparent);
+      flex: 0 0 auto;
+    }
+
+    .project-card h3 {
+      font-size: 1.18rem;
+      line-height: 1.22;
+      font-weight: 780;
+    }
+
+    .description {
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 0.96rem;
+    }
+
+    .tag-list {
+      flex-wrap: wrap;
+      gap: 7px;
+      align-self: end;
+    }
+
+    .tag {
+      color: color-mix(in srgb, var(--accent) 58%, var(--text));
+      background: color-mix(in srgb, var(--accent) 11%, transparent);
+      border: 1px solid color-mix(in srgb, var(--accent) 24%, transparent);
+      border-radius: var(--radius);
+      padding: 5px 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .card-actions {
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: auto;
+      padding-top: 2px;
+    }
+
+    .open-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 40px;
+      padding: 0 12px;
+      border-radius: var(--radius);
+      background: var(--text);
+      color: #101214;
+      font-weight: 760;
+      transition: transform 160ms ease, background 160ms ease;
+    }
+
+    .open-link:hover,
+    .open-link:focus-visible {
+      transform: translateY(-1px);
+      background: color-mix(in srgb, var(--accent) 14%, var(--text));
+      outline: none;
+    }
+
+    .open-link svg,
+    .top-link svg {
+      width: 16px;
+      height: 16px;
+      flex: 0 0 auto;
+    }
+
+    .domain {
+      color: var(--dim);
+      font-size: 0.82rem;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      text-align: right;
+    }
+
+    .empty-state {
+      min-height: 220px;
+      justify-content: center;
+      text-align: center;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.035);
+      padding: 30px;
+    }
+
+    .empty-state strong {
+      display: block;
+      color: var(--text);
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+    }
+
+    .footer {
+      color: var(--dim);
+      padding: 36px 0 46px;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width: 1060px) {
+      .hero {
+        grid-template-columns: 1fr;
+        min-height: auto;
+        padding-bottom: 28px;
+      }
+
+      .showcase-panel {
+        min-height: 400px;
+      }
+
+      .project-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .shell {
+        width: min(100% - 24px, 1180px);
+      }
+
+      .brand-row {
+        padding-top: 14px;
+      }
+
+      .top-actions {
+        display: none;
+      }
+
+      .hero {
+        gap: 20px;
+        padding-top: 12px;
+      }
+
+      .hero h1 {
+        font-size: 3.05rem;
+        line-height: 1;
+      }
+
+      .lede {
+        font-size: 1rem;
+      }
+
+      .quick-stats {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .stat {
+        min-width: 0;
+        padding: 11px 9px;
+      }
+
+      .stat strong {
+        font-size: 1.25rem;
+      }
+
+      .stat span {
+        font-size: 0.75rem;
+      }
+
+      .showcase-panel {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+
+      .mini-card,
+      .mini-card:first-child {
+        min-height: 126px;
+        grid-row: auto;
+      }
+
+      .results-bar {
+        position: static;
+        padding-top: 4px;
+      }
+
+      .project-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .project-card {
+        min-height: auto;
+      }
+
+      .section-heading {
+        align-items: flex-start;
+      }
+
+      .domain {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="shell brand-row" aria-label="Portal header">
+      <a class="brand-mark" href="#catalog" aria-label="Leo Development Portal home">Leo Dev</a>
+      <div class="top-actions" aria-label="Quick links">
+        <a class="top-link" href="#school-learning">School &amp; Learning</a>
+        <a class="top-link" href="#tools-apps">Tools &amp; Apps</a>
+        <a class="top-link" href="#frc-team">FRC &amp; Team</a>
+      </div>
+    </header>
+
+    <section class="shell hero" aria-labelledby="portal-title">
+      <div class="hero-copy">
+        <h1 id="portal-title">Leo Development <span>Portal</span></h1>
+        <p class="lede">One bookmark for every site Leo has built. A clean launchpad for school projects, tools, team systems, communication apps, and games.</p>
+        <div class="quick-stats" aria-label="Portal summary">
+          <div class="stat">
+            <strong id="site-count">14</strong>
+            <span>public sites</span>
+          </div>
+          <div class="stat">
+            <strong id="category-count">5</strong>
+            <span>categories</span>
+          </div>
+          <div class="stat">
+            <strong id="host-count">2</strong>
+            <span>host types</span>
+          </div>
+        </div>
+        <div class="control-panel" aria-label="Search and filters">
+          <div class="search-wrap">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="m21 21-4.35-4.35"></path>
+              <circle cx="11" cy="11" r="7"></circle>
+            </svg>
+            <input id="search" class="search" type="search" autocomplete="off" placeholder="Search projects, tags, hosts..." aria-label="Search projects">
+          </div>
+          <div id="tag-filters" class="filter-row" aria-label="Tag filters"></div>
+        </div>
+      </div>
+
+      <div class="showcase-panel" aria-label="Featured projects">
+        <a class="mini-card" style="--accent:#62a8ff; --image-position:center top" href="https://scout-rebuilt-2026.web.app/" target="_blank" rel="noopener noreferrer">
+          <img class="mini-image" src="assets/thumbs/rebuilt-scout.jpg" alt="" onerror="this.remove()">
+          <span class="mini-card-content">
+            <small>FRC &amp; Team</small>
+            <strong>REBUILT Scout</strong>
+          </span>
+        </a>
+        <a class="mini-card" style="--accent:#ff766d; --image-position:center top" href="https://leonardzyxu-ui.github.io/Debate-Competition-Timer/" target="_blank" rel="noopener noreferrer">
+          <img class="mini-image" src="assets/thumbs/debate-competition-timer.jpg" alt="" onerror="this.remove()">
+          <span class="mini-card-content">
+            <small>Tools &amp; Apps</small>
+            <strong>Debate Timer</strong>
+          </span>
+        </a>
+        <a class="mini-card" style="--accent:#65d596; --image-position:center top" href="https://leonardzyxu-ui.github.io/mac-hacks/docs/index.html" target="_blank" rel="noopener noreferrer">
+          <img class="mini-image" src="assets/thumbs/mac-hacks.jpg" alt="" onerror="this.remove()">
+          <span class="mini-card-content">
+            <small>Tools &amp; Apps</small>
+            <strong>Mac Hacks</strong>
+          </span>
+        </a>
+      </div>
+    </section>
+
+    <main id="catalog" class="shell">
+      <div class="results-bar">
+        <div class="results-inner">
+          <div id="results-meta" class="results-meta"></div>
+          <div id="category-filters" class="filter-row" aria-label="Category filters"></div>
+        </div>
+      </div>
+      <div id="catalog-sections" class="catalog"></div>
+    </main>
+
+    <footer class="shell footer">
+      <p>Built as a static GitHub Pages portal. No private file paths, keys, service accounts, or hidden Firebase configuration are included.</p>
+    </footer>
+  </div>
+
+  <script>
+    const projects = [
+      {
+        title: "Falcon 9 ICT HW",
+        url: "https://leonardzyxu-ui.github.io/Falcon-9-ICT-HW/",
+        category: "School & Learning",
+        tags: ["Space", "School", "Interactive"],
+        description: "An interactive SpaceX Falcon 9 explainer with mission stats, scroll visuals, and a rocket section carousel.",
+        host: "GitHub Pages",
+        thumbnail: "space",
+        image: "assets/thumbs/falcon-9-ict-hw.jpg",
+        imagePosition: "center top",
+        code: "F9",
+        accent: "#62a8ff",
+        accent2: "#f2be5c"
+      },
+      {
+        title: "Mock Apple MacBook Pro",
+        url: "https://leonardzyxu-ui.github.io/Mock-Apple-Macbook-Pro-website/",
+        category: "School & Learning",
+        tags: ["Apple", "Product Demo", "Scroll"],
+        description: "An Apple-style kinetic product-page demo with cinematic scrolling, chip visuals, and polished product sections.",
+        host: "GitHub Pages",
+        thumbnail: "product",
+        image: "assets/thumbs/mock-apple-macbook-pro.jpg",
+        imagePosition: "center top",
+        code: "MBP",
+        accent: "#f3f0e8",
+        accent2: "#62a8ff"
+      },
+      {
+        title: "AstroGraph",
+        url: "https://leonardzyxu-ui.github.io/AstroGraph/",
+        category: "Tools & Apps",
+        tags: ["Astronomy", "Science", "Interactive"],
+        description: "A celestial sphere explorer for visualizing Earth, equators, observer position, and astronomical reference lines.",
+        host: "GitHub Pages",
+        thumbnail: "celestial",
+        image: "assets/thumbs/astrograph.jpg",
+        imagePosition: "center top",
+        code: "AG",
+        accent: "#68d8d2",
+        accent2: "#65d596"
+      },
+      {
+        title: "ICT Learning Portfolio",
+        url: "https://leonardzyxu-ui.github.io/ICT_learning_portfolio/",
+        category: "School & Learning",
+        tags: ["Portfolio", "ICT", "Reflection"],
+        description: "A master ICT learning archive covering digital media, design cycle work, AI/code strategy, and final builds.",
+        host: "GitHub Pages",
+        thumbnail: "dashboard",
+        image: "assets/thumbs/ict-learning-portfolio.jpg",
+        imagePosition: "center top",
+        code: "ICT",
+        accent: "#62a8ff",
+        accent2: "#ff766d"
+      },
+      {
+        title: "Mac Hacks",
+        url: "https://leonardzyxu-ui.github.io/mac-hacks/docs/index.html",
+        category: "Tools & Apps",
+        tags: ["Mac", "Dictionary", "Student Tools"],
+        description: "A searchable Mac tips dictionary with filters, favorites, safety levels, and student-friendly workflow guidance.",
+        host: "GitHub Pages",
+        thumbnail: "dashboard",
+        image: "assets/thumbs/mac-hacks.jpg",
+        imagePosition: "center top",
+        code: "MH",
+        accent: "#65d596",
+        accent2: "#62a8ff"
+      },
+      {
+        title: "Natural Resources Site",
+        url: "https://leonardzyxu-ui.github.io/-/#land",
+        category: "School & Learning",
+        tags: ["Geography", "Chinese", "School"],
+        description: "A Chinese geography site about water, land, mineral, and marine resource distribution with citations and maps.",
+        host: "GitHub Pages",
+        thumbnail: "dashboard",
+        image: "assets/thumbs/natural-resources-site.jpg",
+        imagePosition: "center top",
+        code: "NR",
+        accent: "#65d596",
+        accent2: "#f2be5c"
+      },
+      {
+        title: "BeYoureyeS Etiquette",
+        url: "https://leonardzyxu-ui.github.io/serviceLearning-BeYoureyeS/etiquette.html",
+        category: "School & Learning",
+        tags: ["Accessibility", "Service Learning", "Bilingual"],
+        description: "A bilingual accessibility etiquette guide with visual cards, practical helping tips, and a knowledge quiz.",
+        host: "GitHub Pages",
+        thumbnail: "dashboard",
+        image: "assets/thumbs/beyoureyess-etiquette.jpg",
+        imagePosition: "center top",
+        code: "BYS",
+        accent: "#62a8ff",
+        accent2: "#ff766d"
+      },
+      {
+        title: "About STUCO Website",
+        url: "https://leonardzyxu-ui.github.io/About-STUCO-Website/",
+        category: "School & Learning",
+        tags: ["STUCO", "Story", "Proposal"],
+        description: "A story and value page explaining the STUCO feedback portal, its purpose, build effort, and future direction.",
+        host: "GitHub Pages",
+        thumbnail: "dashboard",
+        image: "assets/thumbs/about-stuco-website.jpg",
+        imagePosition: "center top",
+        code: "ST",
+        accent: "#62a8ff",
+        accent2: "#68d8d2"
+      },
+      {
+        title: "STUCO Feedback Dashboard",
+        url: "https://leonardzyxu-ui.github.io/presentation-for-suggestion-website/",
+        category: "School & Learning",
+        tags: ["STUCO", "Dashboard", "Presentation"],
+        description: "A proposal dashboard with project rationale, core features, timeline, teacher mockups, and admin requests.",
+        host: "GitHub Pages",
+        thumbnail: "dashboard",
+        image: "assets/thumbs/stuco-feedback-dashboard.jpg",
+        imagePosition: "center top",
+        code: "FDB",
+        accent: "#ff766d",
+        accent2: "#62a8ff"
+      },
+      {
+        title: "Debate Competition Timer",
+        url: "https://leonardzyxu-ui.github.io/Debate-Competition-Timer/",
+        category: "Tools & Apps",
+        tags: ["Debate", "Timer", "Stage Display"],
+        description: "A Voices Unbounded Prop/Opp debate timer with operator controls, stage display, and dual Crossfire timers.",
+        host: "GitHub Pages",
+        thumbnail: "dashboard",
+        image: "assets/thumbs/debate-competition-timer.jpg",
+        imagePosition: "center top",
+        code: "DT",
+        accent: "#ff766d",
+        accent2: "#62a8ff"
+      },
+      {
+        title: "FRC10479 / Arcade Hub",
+        url: "https://frc10479-87ff5.web.app/",
+        category: "Games",
+        tags: ["Games", "Arcade", "Firebase"],
+        description: "A hosted arcade hub for Leo's HTML games, including Snake, Codebreaker, Sudoku, Simon Says, and Number Guess.",
+        host: "Firebase Hosting",
+        thumbnail: "game",
+        image: "assets/thumbs/frc10479-arcade-hub.jpg",
+        imagePosition: "center top",
+        code: "10479",
+        accent: "#65d596",
+        accent2: "#62a8ff"
+      },
+      {
+        title: "REBUILT Scout",
+        url: "https://scout-rebuilt-2026.web.app/",
+        category: "FRC & Team",
+        tags: ["FRC", "Scouting", "PWA"],
+        description: "An FRC scouting PWA with match scouting, history, admin analytics, QR/data workflows, and match prediction.",
+        host: "Firebase Hosting",
+        thumbnail: "dashboard",
+        image: "assets/thumbs/rebuilt-scout.jpg",
+        imagePosition: "center top",
+        code: "RS",
+        accent: "#62a8ff",
+        accent2: "#65d596"
+      },
+      {
+        title: "Relative Radar",
+        url: "https://relative-radar.web.app/",
+        category: "Tools & Apps",
+        tags: ["Family", "Bilingual", "Utility"],
+        description: "A bilingual relative-relationship helper with name memory and a quick panic prompt for forgotten relatives.",
+        host: "Firebase Hosting",
+        thumbnail: "dashboard",
+        image: "assets/thumbs/relative-radar.jpg",
+        imagePosition: "center top",
+        code: "RR",
+        accent: "#f2be5c",
+        accent2: "#ff766d"
+      },
+      {
+        title: "ChatWithLeo",
+        url: "https://chatwithleo.web.app/",
+        category: "Communication",
+        tags: ["Messaging", "Firebase", "Private Chat"],
+        description: "A private messaging app with chat, file sharing, replies, recall/delete controls, dark mode, and Leo-side tools.",
+        host: "Firebase Hosting",
+        thumbnail: "chat",
+        image: "assets/thumbs/chatwithleo.jpg",
+        imagePosition: "center top",
+        code: "CWL",
+        accent: "#62a8ff",
+        accent2: "#68d8d2"
+      }
+    ];
+
+    const categoryOrder = ["School & Learning", "Tools & Apps", "FRC & Team", "Communication", "Games"];
+    const tagOrder = ["All", "School", "Tools", "Interactive", "STUCO", "FRC", "Games", "Communication", "Bilingual", "Dashboard"];
+
+    const state = {
+      query: "",
+      tag: "All",
+      category: "All"
+    };
+
+    const searchInput = document.getElementById("search");
+    const tagFilters = document.getElementById("tag-filters");
+    const categoryFilters = document.getElementById("category-filters");
+    const sectionsRoot = document.getElementById("catalog-sections");
+    const resultsMeta = document.getElementById("results-meta");
+
+    const externalIcon = `
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M7 17 17 7"></path>
+        <path d="M9 7h8v8"></path>
+      </svg>
+    `;
+
+    function normalize(value) {
+      return value.toLowerCase().trim();
+    }
+
+    function slugify(value) {
+      return normalize(value).replace(/&/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    }
+
+    function domainFromUrl(url) {
+      try {
+        return new URL(url).host;
+      } catch {
+        return url;
+      }
+    }
+
+    function matchesProject(project) {
+      const query = normalize(state.query);
+      const haystack = normalize([
+        project.title,
+        project.description,
+        project.category,
+        project.host,
+        ...project.tags
+      ].join(" "));
+
+      const matchesQuery = !query || haystack.includes(query);
+      const matchesTag = state.tag === "All" || project.tags.includes(state.tag) || project.category.includes(state.tag);
+      const matchesCategory = state.category === "All" || project.category === state.category;
+
+      return matchesQuery && matchesTag && matchesCategory;
+    }
+
+    function renderFilterButtons(root, values, activeValue, onSelect) {
+      root.innerHTML = values.map((value) => {
+        const active = value === activeValue ? " active" : "";
+        return `<button class="filter-btn${active}" type="button" data-value="${value}" aria-pressed="${value === activeValue}">${value}</button>`;
+      }).join("");
+
+      root.querySelectorAll("button").forEach((button) => {
+        button.addEventListener("click", () => onSelect(button.dataset.value));
+      });
+    }
+
+    function renderThumbnailArt(project) {
+      const art = {
+        F9: `
+          <svg class="thumb-art" viewBox="0 0 320 180" aria-hidden="true">
+            <circle class="soft" cx="62" cy="42" r="3"></circle>
+            <circle class="soft" cx="246" cy="52" r="4"></circle>
+            <circle class="soft" cx="258" cy="126" r="2"></circle>
+            <path class="accent" d="M158 22c20 24 30 50 30 88h-60c0-38 10-64 30-88Z"></path>
+            <path class="glass" d="M128 110h60l20 42h-28l-22-22-22 22h-28l20-42Z"></path>
+            <circle class="accent-2" cx="158" cy="70" r="12"></circle>
+            <path class="line" d="M158 132v34M140 114h36M124 138H88M192 138h40"></path>
+          </svg>
+        `,
+        MBP: `
+          <svg class="thumb-art" viewBox="0 0 320 180" aria-hidden="true">
+            <rect class="glass" x="50" y="36" width="220" height="116" rx="12"></rect>
+            <rect class="soft" x="68" y="54" width="184" height="76" rx="8"></rect>
+            <rect class="accent" x="106" y="72" width="108" height="10" rx="5"></rect>
+            <rect class="accent-2" x="106" y="96" width="70" height="10" rx="5"></rect>
+            <path class="line" d="M74 152h172l20 14H54l20-14ZM224 66l18 18-18 18"></path>
+          </svg>
+        `,
+        AG: `
+          <svg class="thumb-art" viewBox="0 0 320 180" aria-hidden="true">
+            <circle class="glass" cx="160" cy="90" r="62"></circle>
+            <ellipse class="line" cx="160" cy="90" rx="92" ry="22"></ellipse>
+            <ellipse class="line" cx="160" cy="90" rx="24" ry="62"></ellipse>
+            <path class="line" d="M98 90h124M160 28v124M116 48l88 84M204 48l-88 84"></path>
+            <circle class="accent" cx="160" cy="90" r="8"></circle>
+            <circle class="accent-2" cx="224" cy="50" r="7"></circle>
+          </svg>
+        `,
+        ICT: `
+          <svg class="thumb-art" viewBox="0 0 320 180" aria-hidden="true">
+            <rect class="glass" x="36" y="34" width="248" height="116" rx="14"></rect>
+            <rect class="soft" x="56" y="54" width="62" height="76" rx="8"></rect>
+            <rect class="glass" x="132" y="54" width="56" height="32" rx="8"></rect>
+            <rect class="accent" x="202" y="54" width="54" height="32" rx="8"></rect>
+            <rect class="accent-2" x="132" y="98" width="124" height="32" rx="8"></rect>
+            <path class="line" d="M66 68h40M66 86h30M66 104h36"></path>
+          </svg>
+        `,
+        MH: `
+          <svg class="thumb-art" viewBox="0 0 320 180" aria-hidden="true">
+            <rect class="glass" x="40" y="28" width="240" height="124" rx="14"></rect>
+            <rect class="soft" x="58" y="48" width="204" height="26" rx="10"></rect>
+            <circle class="accent" cx="76" cy="61" r="7"></circle>
+            <path class="line" d="M98 61h116M66 96h82M66 122h114"></path>
+            <rect class="accent-2" x="198" y="92" width="48" height="38" rx="10"></rect>
+            <path class="line" d="M212 111h20M222 101v20"></path>
+          </svg>
+        `,
+        NR: `
+          <svg class="thumb-art" viewBox="0 0 320 180" aria-hidden="true">
+            <path class="glass" d="M50 42l70-18 80 20 70-18v112l-70 18-80-20-70 18V42Z"></path>
+            <path class="soft" d="M72 66c28-20 42 10 70-4 22-12 42-4 62 14 24 22 34 10 46 4v38c-28 2-44 24-76 8-30-14-48 2-72 10-14 6-24 0-30-8V66Z"></path>
+            <circle class="accent" cx="126" cy="84" r="8"></circle>
+            <circle class="accent-2" cx="214" cy="106" r="8"></circle>
+            <path class="line" d="M120 24v112M200 44v112"></path>
+          </svg>
+        `,
+        BYS: `
+          <svg class="thumb-art" viewBox="0 0 320 180" aria-hidden="true">
+            <rect class="glass" x="42" y="34" width="236" height="114" rx="14"></rect>
+            <circle class="accent" cx="104" cy="78" r="18"></circle>
+            <path class="line" d="M104 98v42M104 112l-28 24M104 112l28 22M132 104l34-34M166 70l26 26"></path>
+            <rect class="soft" x="184" y="58" width="58" height="44" rx="10"></rect>
+            <path class="line" d="M198 80l10 10 22-24M184 124h58"></path>
+          </svg>
+        `,
+        ST: `
+          <svg class="thumb-art" viewBox="0 0 320 180" aria-hidden="true">
+            <rect class="glass" x="46" y="34" width="228" height="116" rx="14"></rect>
+            <path class="accent" d="M80 116h60v28H80zM130 92h60v52h-60zM180 70h60v74h-60z"></path>
+            <path class="line" d="M78 58h96M78 78h70"></path>
+            <path class="soft" d="M210 36h50a16 16 0 0 1 16 16v20a16 16 0 0 1-16 16h-22l-20 18 6-18h-14a16 16 0 0 1-16-16V52a16 16 0 0 1 16-16Z"></path>
+          </svg>
+        `,
+        FDB: `
+          <svg class="thumb-art" viewBox="0 0 320 180" aria-hidden="true">
+            <rect class="glass" x="38" y="30" width="244" height="124" rx="14"></rect>
+            <rect class="soft" x="56" y="52" width="62" height="34" rx="8"></rect>
+            <rect class="accent" x="130" y="52" width="62" height="34" rx="8"></rect>
+            <rect class="accent-2" x="204" y="52" width="48" height="34" rx="8"></rect>
+            <path class="line" d="M64 116h44l22-20 36 18 34-34 48 36M64 132h176"></path>
+          </svg>
+        `,
+        DT: `
+          <svg class="thumb-art" viewBox="0 0 320 180" aria-hidden="true">
+            <rect class="glass" x="38" y="34" width="244" height="112" rx="14"></rect>
+            <circle class="soft" cx="112" cy="90" r="44"></circle>
+            <circle class="glass" cx="112" cy="90" r="34"></circle>
+            <path class="line" d="M112 64v28l22 12"></path>
+            <rect class="accent" x="178" y="58" width="68" height="18" rx="9"></rect>
+            <rect class="accent-2" x="178" y="88" width="52" height="18" rx="9"></rect>
+            <rect class="glass" x="178" y="118" width="76" height="18" rx="9"></rect>
+          </svg>
+        `,
+        10479: `
+          <svg class="thumb-art" viewBox="0 0 320 180" aria-hidden="true">
+            <rect class="glass" x="36" y="30" width="248" height="124" rx="14"></rect>
+            <rect class="soft" x="58" y="52" width="54" height="54" rx="10"></rect>
+            <rect class="accent" x="134" y="52" width="54" height="54" rx="10"></rect>
+            <rect class="accent-2" x="210" y="52" width="54" height="54" rx="10"></rect>
+            <path class="line" d="M72 126h176M84 68v22M73 79h22M148 74h26M224 78l26 18M250 78l-26 18"></path>
+          </svg>
+        `,
+        RS: `
+          <svg class="thumb-art" viewBox="0 0 320 180" aria-hidden="true">
+            <rect class="glass" x="30" y="30" width="260" height="120" rx="14"></rect>
+            <path class="line" d="M48 90h224M90 44v92M230 44v92M70 62h180M70 118h180"></path>
+            <rect class="soft" x="66" y="66" width="62" height="44" rx="10"></rect>
+            <rect class="accent" x="144" y="92" width="50" height="36" rx="10"></rect>
+            <circle class="accent-2" cx="210" cy="76" r="12"></circle>
+            <path class="line" d="M169 92V70h42M194 110h52M144 128v18h-54"></path>
+          </svg>
+        `,
+        RR: `
+          <svg class="thumb-art" viewBox="0 0 320 180" aria-hidden="true">
+            <rect class="glass" x="44" y="34" width="232" height="112" rx="14"></rect>
+            <circle class="accent" cx="160" cy="62" r="18"></circle>
+            <circle class="soft" cx="100" cy="118" r="18"></circle>
+            <circle class="accent-2" cx="220" cy="118" r="18"></circle>
+            <path class="line" d="M160 80v20M160 100H100v18M160 100h60v18M82 146h36M142 90h36M202 146h36"></path>
+          </svg>
+        `,
+        CWL: `
+          <svg class="thumb-art" viewBox="0 0 320 180" aria-hidden="true">
+            <rect class="glass" x="42" y="34" width="236" height="112" rx="14"></rect>
+            <path class="soft" d="M72 60h126a14 14 0 0 1 14 14v18a14 14 0 0 1-14 14h-74l-30 22 8-22H72a14 14 0 0 1-14-14V74a14 14 0 0 1 14-14Z"></path>
+            <path class="accent" d="M146 98h100a14 14 0 0 1 14 14v18a14 14 0 0 1-14 14h-22l8 18-28-18h-58a14 14 0 0 1-14-14v-18a14 14 0 0 1 14-14Z"></path>
+            <path class="line" d="M84 82h88M164 122h54M228 54v24h24"></path>
+          </svg>
+        `
+      };
+
+      return art[project.code] || `
+        <svg class="thumb-art" viewBox="0 0 320 180" aria-hidden="true">
+          <rect class="glass" x="44" y="34" width="232" height="112" rx="14"></rect>
+          <rect class="accent" x="70" y="62" width="76" height="56" rx="10"></rect>
+          <rect class="soft" x="162" y="62" width="88" height="20" rx="10"></rect>
+          <rect class="accent-2" x="162" y="98" width="62" height="20" rx="10"></rect>
+        </svg>
+      `;
+    }
+
+    function renderProjectCard(project) {
+      const tags = project.tags.map((tag) => `<span class="tag">${tag}</span>`).join("");
+      const domain = domainFromUrl(project.url);
+      const thumbClass = `thumb thumb-${project.thumbnail}`;
+      const imagePosition = project.imagePosition || "center center";
+      return `
+        <article class="project-card" style="--accent:${project.accent}; --accent-2:${project.accent2}; --image-position:${imagePosition}">
+          <div class="${thumbClass}" data-code="${project.code}" aria-hidden="true">
+            ${renderThumbnailArt(project)}
+            <img class="thumb-image" src="${project.image}" alt="" onerror="this.remove()">
+          </div>
+          <div class="card-body">
+            <div class="meta-row">
+              <span class="host"><span class="host-dot"></span>${project.host}</span>
+              <span>${project.category}</span>
+            </div>
+            <h3>${project.title}</h3>
+            <p class="description">${project.description}</p>
+            <div class="tag-list" aria-label="Tags for ${project.title}">${tags}</div>
+            <div class="card-actions">
+              <a class="open-link" href="${project.url}" target="_blank" rel="noopener noreferrer" aria-label="Open ${project.title}">
+                Open site ${externalIcon}
+              </a>
+              <span class="domain">${domain}</span>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderCatalog() {
+      const filtered = projects.filter(matchesProject);
+
+      document.getElementById("site-count").textContent = projects.length;
+      document.getElementById("category-count").textContent = categoryOrder.length;
+      document.getElementById("host-count").textContent = new Set(projects.map((project) => project.host)).size;
+
+      resultsMeta.textContent = `${filtered.length} of ${projects.length} sites shown`;
+
+      if (!filtered.length) {
+        sectionsRoot.innerHTML = `
+          <div class="empty-state">
+            <div>
+              <strong>No matching sites</strong>
+              <span>Try a broader search or choose All.</span>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      sectionsRoot.innerHTML = categoryOrder.map((category) => {
+        const items = filtered.filter((project) => project.category === category);
+        if (!items.length) return "";
+        const sectionId = slugify(category);
+        return `
+          <section id="${sectionId}" class="category-section" aria-labelledby="${sectionId}-heading">
+            <div class="section-heading">
+              <h2 id="${sectionId}-heading">${category}</h2>
+              <span>${items.length} ${items.length === 1 ? "site" : "sites"}</span>
+            </div>
+            <div class="project-grid">
+              ${items.map(renderProjectCard).join("")}
+            </div>
+          </section>
+        `;
+      }).join("");
+    }
+
+    function renderControls() {
+      renderFilterButtons(tagFilters, tagOrder, state.tag, (value) => {
+        state.tag = value;
+        renderControls();
+        renderCatalog();
+      });
+
+      renderFilterButtons(categoryFilters, ["All", ...categoryOrder], state.category, (value) => {
+        state.category = value;
+        renderControls();
+        renderCatalog();
+      });
+    }
+
+    searchInput.addEventListener("input", (event) => {
+      state.query = event.target.value;
+      renderCatalog();
+    });
+
+    renderControls();
+    renderCatalog();
+  </script>
+</body>
+</html>
