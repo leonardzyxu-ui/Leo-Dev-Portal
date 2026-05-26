@@ -24,7 +24,11 @@
       --amber: #f2be5c;
       --cyan: #68d8d2;
       --shadow: 0 18px 42px rgba(0, 0, 0, 0.28);
-      --radius: 8px;
+      --radius: 26px;
+      --radius-sm: 18px;
+      --radius-lg: 34px;
+      --radius-xl: 42px;
+      --radius-pill: 999px;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
@@ -39,6 +43,7 @@
     body {
       margin: 0;
       min-height: 100vh;
+      overflow-x: hidden;
       background:
         linear-gradient(115deg, rgba(104, 216, 210, 0.08), transparent 34%),
         linear-gradient(245deg, rgba(255, 118, 109, 0.08), transparent 36%),
@@ -66,6 +71,24 @@
     button,
     input {
       font: inherit;
+    }
+
+    @supports (corner-shape: squircle) {
+      .brand-mark,
+      .top-link,
+      .stat,
+      .control-panel,
+      .search,
+      .filter-btn,
+      .showcase-panel,
+      .mini-card,
+      .results-inner,
+      .project-card,
+      .tag,
+      .open-link,
+      .empty-state {
+        corner-shape: squircle;
+      }
     }
 
     .page {
@@ -115,7 +138,7 @@
       height: 42px;
       padding: 0 12px;
       border: 1px solid var(--line-strong);
-      border-radius: var(--radius);
+      border-radius: var(--radius-sm);
       background:
         linear-gradient(135deg, rgba(98, 168, 255, 0.25), transparent),
         linear-gradient(315deg, rgba(101, 213, 150, 0.2), rgba(255, 118, 109, 0.1)),
@@ -140,7 +163,7 @@
       gap: 8px;
       padding: 10px 12px;
       border: 1px solid var(--line);
-      border-radius: var(--radius);
+      border-radius: var(--radius-sm);
       background: rgba(255, 255, 255, 0.035);
       transition: border-color 160ms ease, transform 160ms ease, color 160ms ease;
     }
@@ -157,6 +180,7 @@
       display: grid;
       gap: 24px;
       align-content: center;
+      min-width: 0;
     }
 
     h1,
@@ -197,7 +221,7 @@
       min-width: 134px;
       padding: 14px;
       border: 1px solid var(--line);
-      border-radius: var(--radius);
+      border-radius: var(--radius-sm);
       background: rgba(255, 255, 255, 0.04);
     }
 
@@ -218,12 +242,13 @@
 
     .control-panel {
       border: 1px solid var(--line);
-      border-radius: var(--radius);
+      border-radius: var(--radius-lg);
       background: rgba(24, 27, 30, 0.84);
       box-shadow: var(--shadow);
       padding: 14px;
       display: grid;
       gap: 12px;
+      min-width: 0;
       backdrop-filter: blur(18px);
     }
 
@@ -247,7 +272,7 @@
       min-height: 52px;
       padding: 0 14px 0 44px;
       border: 1px solid var(--line);
-      border-radius: var(--radius);
+      border-radius: var(--radius-sm);
       background: #111315;
       color: var(--text);
       outline: none;
@@ -265,7 +290,7 @@
 
     .filter-btn {
       border: 1px solid var(--line);
-      border-radius: var(--radius);
+      border-radius: var(--radius-sm);
       background: rgba(255, 255, 255, 0.035);
       color: var(--muted);
       min-height: 36px;
@@ -290,7 +315,7 @@
     .showcase-panel {
       min-height: 520px;
       border: 1px solid var(--line);
-      border-radius: var(--radius);
+      border-radius: var(--radius-xl);
       background:
         linear-gradient(180deg, rgba(255, 255, 255, 0.065), transparent 38%),
         linear-gradient(135deg, rgba(98, 168, 255, 0.18), transparent 28%),
@@ -302,13 +327,14 @@
       grid-template-columns: 1fr 1fr;
       gap: 12px;
       align-content: center;
+      min-width: 0;
     }
 
     .mini-card {
       position: relative;
       min-height: 168px;
       border: 1px solid rgba(255, 255, 255, 0.13);
-      border-radius: var(--radius);
+      border-radius: var(--radius-lg);
       overflow: hidden;
       background: #101214;
       padding: 14px;
@@ -323,7 +349,7 @@
       z-index: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: var(--image-fit, cover);
       object-position: var(--image-position, center center);
       filter: saturate(1) contrast(0.94) brightness(0.9);
       transform: scale(1.02);
@@ -356,7 +382,7 @@
       inset: auto 14px 14px 14px;
       z-index: 2;
       height: 40%;
-      border-radius: var(--radius);
+      border-radius: var(--radius-lg);
       background: linear-gradient(180deg, rgba(14, 16, 17, 0), rgba(14, 16, 17, 0.88));
       pointer-events: none;
     }
@@ -410,11 +436,12 @@
 
     .results-inner {
       border: 1px solid var(--line);
-      border-radius: var(--radius);
+      border-radius: var(--radius-lg);
       background: rgba(24, 27, 30, 0.92);
       padding: 12px;
       display: grid;
       gap: 12px;
+      min-width: 0;
     }
 
     .results-meta {
@@ -460,7 +487,7 @@
       position: relative;
       min-height: 424px;
       border: 1px solid var(--line);
-      border-radius: var(--radius);
+      border-radius: var(--radius-lg);
       background: rgba(24, 27, 30, 0.86);
       overflow: hidden;
       box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
@@ -491,7 +518,7 @@
       position: absolute;
       inset: 16px;
       border: 1px solid rgba(255, 255, 255, 0.18);
-      border-radius: var(--radius);
+      border-radius: var(--radius-sm);
       background:
         linear-gradient(90deg, rgba(255, 255, 255, 0.18) 0 16%, transparent 16% 100%),
         repeating-linear-gradient(0deg, transparent 0 14px, rgba(255, 255, 255, 0.13) 14px 15px),
@@ -573,7 +600,7 @@
       z-index: 3;
       padding: 5px 8px;
       border: 1px solid rgba(255, 255, 255, 0.18);
-      border-radius: var(--radius);
+      border-radius: var(--radius-sm);
       background: rgba(10, 12, 14, 0.58);
       color: rgba(255, 255, 255, 0.88);
       font-size: 0.78rem;
@@ -598,7 +625,7 @@
       z-index: 2;
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: var(--image-fit, cover);
       object-position: var(--image-position, center center);
       filter: saturate(1) contrast(0.98) brightness(1);
       transition: transform 220ms ease, filter 220ms ease;
@@ -663,7 +690,7 @@
     .host-dot {
       width: 8px;
       height: 8px;
-      border-radius: 999px;
+      border-radius: var(--radius-pill);
       background: var(--accent);
       box-shadow: 0 0 16px color-mix(in srgb, var(--accent) 60%, transparent);
       flex: 0 0 auto;
@@ -691,7 +718,7 @@
       color: color-mix(in srgb, var(--accent) 58%, var(--text));
       background: color-mix(in srgb, var(--accent) 11%, transparent);
       border: 1px solid color-mix(in srgb, var(--accent) 24%, transparent);
-      border-radius: var(--radius);
+      border-radius: var(--radius-pill);
       padding: 5px 8px;
       font-size: 0.78rem;
       font-weight: 700;
@@ -711,7 +738,7 @@
       gap: 8px;
       min-height: 40px;
       padding: 0 12px;
-      border-radius: var(--radius);
+      border-radius: var(--radius-sm);
       background: var(--text);
       color: #101214;
       font-weight: 760;
@@ -748,7 +775,7 @@
       text-align: center;
       color: var(--muted);
       border: 1px solid var(--line);
-      border-radius: var(--radius);
+      border-radius: var(--radius-lg);
       background: rgba(255, 255, 255, 0.035);
       padding: 30px;
     }
@@ -801,7 +828,8 @@
       }
 
       .hero h1 {
-        font-size: 3.05rem;
+        max-width: 100%;
+        font-size: 2.72rem;
         line-height: 1;
       }
 
@@ -879,7 +907,7 @@
         <p class="lede">One bookmark for every site Leo has built. A clean launchpad for school projects, tools, team systems, communication apps, and games.</p>
         <div class="quick-stats" aria-label="Portal summary">
           <div class="stat">
-            <strong id="site-count">14</strong>
+            <strong id="site-count">12</strong>
             <span>public sites</span>
           </div>
           <div class="stat">
@@ -918,7 +946,7 @@
             <strong>Debate Timer</strong>
           </span>
         </a>
-        <a class="mini-card" style="--accent:#65d596; --image-position:center top" href="https://leonardzyxu-ui.github.io/mac-hacks/docs/index.html" target="_blank" rel="noopener noreferrer">
+        <a class="mini-card" style="--accent:#65d596; --image-position:center center; --image-fit:contain" href="https://leonardzyxu-ui.github.io/mac-hacks/docs/index.html" target="_blank" rel="noopener noreferrer">
           <img class="mini-image" src="assets/thumbs/mac-hacks.jpg" alt="" onerror="this.remove()">
           <span class="mini-card-content">
             <small>Tools &amp; Apps</small>
@@ -954,7 +982,7 @@
         host: "GitHub Pages",
         thumbnail: "space",
         image: "assets/thumbs/falcon-9-ict-hw.jpg",
-        imagePosition: "center top",
+        imagePosition: "center center",
         code: "F9",
         accent: "#62a8ff",
         accent2: "#f2be5c"
@@ -968,7 +996,8 @@
         host: "GitHub Pages",
         thumbnail: "product",
         image: "assets/thumbs/mock-apple-macbook-pro.jpg",
-        imagePosition: "center top",
+        imagePosition: "center center",
+        imageFit: "contain",
         code: "MBP",
         accent: "#f3f0e8",
         accent2: "#62a8ff"
@@ -1010,7 +1039,8 @@
         host: "GitHub Pages",
         thumbnail: "dashboard",
         image: "assets/thumbs/mac-hacks.jpg",
-        imagePosition: "center top",
+        imagePosition: "center center",
+        imageFit: "contain",
         code: "MH",
         accent: "#65d596",
         accent2: "#62a8ff"
@@ -1024,7 +1054,7 @@
         host: "GitHub Pages",
         thumbnail: "dashboard",
         image: "assets/thumbs/natural-resources-site.jpg",
-        imagePosition: "center top",
+        imagePosition: "center center",
         code: "NR",
         accent: "#65d596",
         accent2: "#f2be5c"
@@ -1038,38 +1068,11 @@
         host: "GitHub Pages",
         thumbnail: "dashboard",
         image: "assets/thumbs/beyoureyess-etiquette.jpg",
-        imagePosition: "center top",
+        imagePosition: "center center",
+        imageFit: "contain",
         code: "BYS",
         accent: "#62a8ff",
         accent2: "#ff766d"
-      },
-      {
-        title: "About STUCO Website",
-        url: "https://leonardzyxu-ui.github.io/About-STUCO-Website/",
-        category: "School & Learning",
-        tags: ["STUCO", "Story", "Proposal"],
-        description: "A story and value page explaining the STUCO feedback portal, its purpose, build effort, and future direction.",
-        host: "GitHub Pages",
-        thumbnail: "dashboard",
-        image: "assets/thumbs/about-stuco-website.jpg",
-        imagePosition: "center top",
-        code: "ST",
-        accent: "#62a8ff",
-        accent2: "#68d8d2"
-      },
-      {
-        title: "STUCO Feedback Dashboard",
-        url: "https://leonardzyxu-ui.github.io/presentation-for-suggestion-website/",
-        category: "School & Learning",
-        tags: ["STUCO", "Dashboard", "Presentation"],
-        description: "A proposal dashboard with project rationale, core features, timeline, teacher mockups, and admin requests.",
-        host: "GitHub Pages",
-        thumbnail: "dashboard",
-        image: "assets/thumbs/stuco-feedback-dashboard.jpg",
-        imagePosition: "center top",
-        code: "FDB",
-        accent: "#ff766d",
-        accent2: "#62a8ff"
       },
       {
         title: "Debate Competition Timer",
@@ -1144,7 +1147,7 @@
     ];
 
     const categoryOrder = ["School & Learning", "Tools & Apps", "FRC & Team", "Communication", "Games"];
-    const tagOrder = ["All", "School", "Tools", "Interactive", "STUCO", "FRC", "Games", "Communication", "Bilingual", "Dashboard"];
+    const tagOrder = ["All", "School", "Tools", "Interactive", "FRC", "Games", "Communication", "Bilingual"];
 
     const state = {
       query: "",
@@ -1279,23 +1282,6 @@
             <path class="line" d="M198 80l10 10 22-24M184 124h58"></path>
           </svg>
         `,
-        ST: `
-          <svg class="thumb-art" viewBox="0 0 320 180" aria-hidden="true">
-            <rect class="glass" x="46" y="34" width="228" height="116" rx="14"></rect>
-            <path class="accent" d="M80 116h60v28H80zM130 92h60v52h-60zM180 70h60v74h-60z"></path>
-            <path class="line" d="M78 58h96M78 78h70"></path>
-            <path class="soft" d="M210 36h50a16 16 0 0 1 16 16v20a16 16 0 0 1-16 16h-22l-20 18 6-18h-14a16 16 0 0 1-16-16V52a16 16 0 0 1 16-16Z"></path>
-          </svg>
-        `,
-        FDB: `
-          <svg class="thumb-art" viewBox="0 0 320 180" aria-hidden="true">
-            <rect class="glass" x="38" y="30" width="244" height="124" rx="14"></rect>
-            <rect class="soft" x="56" y="52" width="62" height="34" rx="8"></rect>
-            <rect class="accent" x="130" y="52" width="62" height="34" rx="8"></rect>
-            <rect class="accent-2" x="204" y="52" width="48" height="34" rx="8"></rect>
-            <path class="line" d="M64 116h44l22-20 36 18 34-34 48 36M64 132h176"></path>
-          </svg>
-        `,
         DT: `
           <svg class="thumb-art" viewBox="0 0 320 180" aria-hidden="true">
             <rect class="glass" x="38" y="34" width="244" height="112" rx="14"></rect>
@@ -1360,8 +1346,9 @@
       const domain = domainFromUrl(project.url);
       const thumbClass = `thumb thumb-${project.thumbnail}`;
       const imagePosition = project.imagePosition || "center center";
+      const imageFit = project.imageFit || "cover";
       return `
-        <article class="project-card" style="--accent:${project.accent}; --accent-2:${project.accent2}; --image-position:${imagePosition}">
+        <article class="project-card" style="--accent:${project.accent}; --accent-2:${project.accent2}; --image-position:${imagePosition}; --image-fit:${imageFit}">
           <div class="${thumbClass}" data-code="${project.code}" aria-hidden="true">
             ${renderThumbnailArt(project)}
             <img class="thumb-image" src="${project.image}" alt="" onerror="this.remove()">
