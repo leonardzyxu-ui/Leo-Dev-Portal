@@ -73,24 +73,6 @@
       font: inherit;
     }
 
-    @supports (corner-shape: squircle) {
-      .brand-mark,
-      .top-link,
-      .stat,
-      .control-panel,
-      .search,
-      .filter-btn,
-      .showcase-panel,
-      .mini-card,
-      .results-inner,
-      .project-card,
-      .tag,
-      .open-link,
-      .empty-state {
-        corner-shape: squircle;
-      }
-    }
-
     .page {
       position: relative;
       z-index: 1;
@@ -577,13 +559,6 @@
         rgba(255, 255, 255, 0.05);
     }
 
-    .thumb-game::before {
-      background:
-        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.18) 0 14px, transparent 14px 28px),
-        repeating-linear-gradient(0deg, transparent 0 28px, rgba(255, 255, 255, 0.12) 28px 29px),
-        rgba(255, 255, 255, 0.05);
-    }
-
     .thumb::before {
       inset: 10px;
       background:
@@ -904,14 +879,14 @@
     <section class="shell hero" aria-labelledby="portal-title">
       <div class="hero-copy">
         <h1 id="portal-title">Leo Development <span>Portal</span></h1>
-        <p class="lede">One bookmark for every site Leo has built. A clean launchpad for school projects, tools, team systems, communication apps, and games.</p>
+        <p class="lede">One bookmark for every site Leo has built. A clean launchpad for school projects, tools, team systems, and communication apps.</p>
         <div class="quick-stats" aria-label="Portal summary">
           <div class="stat">
             <strong id="site-count">12</strong>
             <span>public sites</span>
           </div>
           <div class="stat">
-            <strong id="category-count">5</strong>
+            <strong id="category-count">4</strong>
             <span>categories</span>
           </div>
           <div class="stat">
@@ -932,11 +907,11 @@
       </div>
 
       <div class="showcase-panel" aria-label="Featured projects">
-        <a class="mini-card" style="--accent:#62a8ff; --image-position:center top" href="https://scout-rebuilt-2026.web.app/" target="_blank" rel="noopener noreferrer">
-          <img class="mini-image" src="assets/thumbs/rebuilt-scout.jpg" alt="" onerror="this.remove()">
+        <a class="mini-card" style="--accent:#65d596; --image-position:center center" href="https://frc10479-87ff5.web.app/" target="_blank" rel="noopener noreferrer">
+          <img class="mini-image" src="assets/thumbs/frc-team-10479.jpg" alt="" onerror="this.remove()">
           <span class="mini-card-content">
             <small>FRC &amp; Team</small>
-            <strong>REBUILT Scout</strong>
+            <strong>FRC Team 10479</strong>
           </span>
         </a>
         <a class="mini-card" style="--accent:#ff766d; --image-position:center top" href="https://leonardzyxu-ui.github.io/Debate-Competition-Timer/" target="_blank" rel="noopener noreferrer">
@@ -1089,15 +1064,15 @@
         accent2: "#62a8ff"
       },
       {
-        title: "FRC10479 / Arcade Hub",
+        title: "FRC Team 10479",
         url: "https://frc10479-87ff5.web.app/",
-        category: "Games",
-        tags: ["Games", "Arcade", "Firebase"],
-        description: "A hosted arcade hub for Leo's HTML games, including Snake, Codebreaker, Sudoku, Simon Says, and Number Guess.",
+        category: "FRC & Team",
+        tags: ["FRC", "Robotics", "Team Website"],
+        description: "The main FRC Team 10479 website with team identity, robots, events, sponsors, scouting help, and brand visuals.",
         host: "Firebase Hosting",
-        thumbnail: "game",
-        image: "assets/thumbs/frc10479-arcade-hub.jpg",
-        imagePosition: "center top",
+        thumbnail: "dashboard",
+        image: "assets/thumbs/frc-team-10479.jpg",
+        imagePosition: "center center",
         code: "10479",
         accent: "#65d596",
         accent2: "#62a8ff"
@@ -1146,8 +1121,8 @@
       }
     ];
 
-    const categoryOrder = ["School & Learning", "Tools & Apps", "FRC & Team", "Communication", "Games"];
-    const tagOrder = ["All", "School", "Tools", "Interactive", "FRC", "Games", "Communication", "Bilingual"];
+    const categoryOrder = ["School & Learning", "Tools & Apps", "FRC & Team", "Communication"];
+    const tagOrder = ["All", "School", "Tools", "Interactive", "FRC", "Communication", "Bilingual"];
 
     const state = {
       query: "",
